@@ -1,0 +1,94 @@
+name: iOS 12 build
+
+on:
+  push:
+    branches: [ios12-port]
+    paths-ignore:
+      - 'logs/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-14
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install tools
+        run: brew install cmake ninja ldid
+
+      - name: Fetch vendored deps (SDL2, miniz)
+        run: |
+          set -e
+          git clone --depth 1 --branch release-2.30.9 https://github.com/libsdl-org/SDL.git vendor/SDL2
+          rm -rf vendor/SDL2/.git
+          git clone --depth 1 https://github.com/richgel999/miniz.git vendor/miniz
+          rm -rf vendor/miniz/.git
+          printf '%s\n' '#ifndef MINIZ_EXPORT_H' '#define MINIZ_EXPORT_H' '#define MINIZ_EXPORT' '#endif' > vendor/miniz/miniz_export.h
+
+      - name: Configure (iphoneos arm64, deployment 12.0)
+        run: |
+          set -o pipefail
+          cmake -S . -B build-ios12 -GXcode \
+            -DBACKEND=sdl2 \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_SYSTEM_NAME=iOS \
+            -DCMAKE_OSX_SYSROOT=iphoneos \
+            -DCMAKE_OSX_ARCHITECTURES=arm64 \
+            -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0 \
+            -DENABLE_LEGACY_GL=OFF \
+            -DENABLE_MODERN_GL=ON \
+            -DENABLE_METAL=ON \
+            -DAUDIO_BACKEND=miniaudio 2>&1 | tee build.log
+
+      - name: Build
+        id: build
+        run: |
+          set -o pipefail
+          xcodebuild -project build-ios12/butterscotch.xcodeproj \
+            -target butterscotch -configuration Release \
+            -sdk iphoneos CODE_SIGNING_ALLOWED=NO \
+            ARCHS=arm64 IPHONEOS_DEPLOYMENT_TARGET=12.0 build 2>&1 | tee -a build.log
+
+      - name: Package unsigned IPA
+        if: steps.build.outcome == 'success'
+        run: |
+          APP=$(find build-ios12 -name "*.app" -path "*Release-iphoneos*" -maxdepth 6 | head -1)
+          echo "App: $APP"
+          # Pseudo-sign the binary so Filza/jailbreak installs accept it.
+          ldid -S "$APP/$(basename "$APP" .app)"
+          mkdir -p Payload && cp -R "$APP" Payload/
+          zip -qr Btios21.ipa Payload
+          rm -rf Payload
+
+      - name: Save log to repo
+        if: always()
+        run: |
+          RUN="${{ github.run_number }}"
+          mkdir -p logs
+          cp build.log "logs/build-${RUN}.log" 2>/dev/null || echo "no log" > "logs/build-${RUN}.log"
+          cp "logs/build-${RUN}.log" logs/latest.log
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add logs
+          git commit -m "Add build log for run ${RUN}" || true
+          git push origin HEAD:${{ github.ref_name }} || true
+
+      - name: Publish release
+        if: steps.build.outcome == 'success'
+        run: |
+          TAG="btios21-run-${{ github.run_number }}"
+          gh release create "$TAG" Btios21.ipa \
+            --title "Btios21 (run ${{ github.run_number }})" \
+            --notes "Unsigned IPA, deployment target iOS 12.0, arm64. Sign with Sideloadly or AltStore."
+
+      - name: Upload log as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.log

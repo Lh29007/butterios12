@@ -1,0 +1,246 @@
+-- The C compiler identification is AppleClang 15.0.0.15000309
+-- The CXX compiler identification is AppleClang 15.0.0.15000309
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /Applications/Xcode_15.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /Applications/Xcode_15.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- The OBJC compiler identification is AppleClang 15.0.0.15000309
+-- The OBJCXX compiler identification is AppleClang 15.0.0.15000309
+-- Detecting OBJC compiler ABI info
+-- Detecting OBJC compiler ABI info - done
+-- Check for working OBJC compiler: /Applications/Xcode_15.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang - skipped
+-- Detecting OBJCXX compiler ABI info
+-- Detecting OBJCXX compiler ABI info - done
+-- Check for working OBJCXX compiler: /Applications/Xcode_15.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ - skipped
+-- Performing Test HAS_FOMIT_FRAME_POINTER
+-- Performing Test HAS_FOMIT_FRAME_POINTER - Success
+-- Git commit   : 67cb8ff
+-- Commit date  : 2026-10-23
+CMake Warning (deprecated) at vendor/SDL2/CMakeLists.txt:8 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+to suppress it.
+
+-- Found PkgConfig: /opt/homebrew/bin/pkg-config (found version "3.0.6")
+-- Looking for __GLIBC__
+-- Looking for __GLIBC__ - not found
+-- Performing Test CHECK_CPU_ARCHITECTURE_X86
+-- Performing Test CHECK_CPU_ARCHITECTURE_X86 - Failed
+-- Performing Test CHECK_CPU_ARCHITECTURE_X64
+-- Performing Test CHECK_CPU_ARCHITECTURE_X64 - Failed
+-- Performing Test CHECK_CPU_ARCHITECTURE_ARM32
+-- Performing Test CHECK_CPU_ARCHITECTURE_ARM32 - Failed
+-- Performing Test CHECK_CPU_ARCHITECTURE_ARM64
+-- Performing Test CHECK_CPU_ARCHITECTURE_ARM64 - Success
+-- Performing Test CHECK_CPU_ARCHITECTURE_LOONGARCH64
+-- Performing Test CHECK_CPU_ARCHITECTURE_LOONGARCH64 - Failed
+-- Performing Test HAVE_GCC_WALL
+-- Performing Test HAVE_GCC_WALL - Success
+-- Performing Test HAVE_GCC_WUNDEF
+-- Performing Test HAVE_GCC_WUNDEF - Success
+-- Performing Test HAVE_GCC_NO_STRICT_ALIASING
+-- Performing Test HAVE_GCC_NO_STRICT_ALIASING - Success
+-- Performing Test HAVE_GCC_WDOCUMENTATION
+-- Performing Test HAVE_GCC_WDOCUMENTATION - Success
+-- Performing Test HAVE_GCC_WDOCUMENTATION_UNKNOWN_COMMAND
+-- Performing Test HAVE_GCC_WDOCUMENTATION_UNKNOWN_COMMAND - Success
+-- Performing Test HAVE_GCC_COMMENT_BLOCK_COMMANDS
+-- Performing Test HAVE_GCC_COMMENT_BLOCK_COMMANDS - Success
+-- Performing Test HAVE_GCC_WDECLARATION_AFTER_STATEMENT
+-- Performing Test HAVE_GCC_WDECLARATION_AFTER_STATEMENT - Success
+-- Performing Test HAVE_GCC_ATOMICS
+-- Performing Test HAVE_GCC_ATOMICS - Success
+-- Performing Test HAVE_GCC_FVISIBILITY
+-- Performing Test HAVE_GCC_FVISIBILITY - Success
+-- Performing Test HAVE_GCC_WSHADOW
+-- Performing Test HAVE_GCC_WSHADOW - Success
+-- Performing Test HAVE_GCC_WUNUSED_LOCAL_TYPEDEFS
+-- Performing Test HAVE_GCC_WUNUSED_LOCAL_TYPEDEFS - Success
+-- Performing Test HAVE_WNO_ERROR_DEPRECATED_DECLARATIONS
+-- Performing Test HAVE_WNO_ERROR_DEPRECATED_DECLARATIONS - Success
+-- Looking for immintrin.h
+-- Looking for immintrin.h - not found
+-- Performing Test HAVE_ALTIVEC_H_HDR
+-- Performing Test HAVE_ALTIVEC_H_HDR - Failed
+-- Performing Test CPU_SUPPORTS_ALTIVEC
+-- Performing Test CPU_SUPPORTS_ALTIVEC - Failed
+-- Looking for ctype.h
+-- Looking for ctype.h - found
+-- Looking for float.h
+-- Looking for float.h - found
+-- Looking for iconv.h
+-- Looking for iconv.h - found
+-- Looking for inttypes.h
+-- Looking for inttypes.h - found
+-- Looking for limits.h
+-- Looking for limits.h - found
+-- Looking for malloc.h
+-- Looking for malloc.h - not found
+-- Looking for math.h
+-- Looking for math.h - found
+-- Looking for memory.h
+-- Looking for memory.h - found
+-- Looking for signal.h
+-- Looking for signal.h - found
+-- Looking for stdarg.h
+-- Looking for stdarg.h - found
+-- Looking for stddef.h
+-- Looking for stddef.h - found
+-- Looking for stdint.h
+-- Looking for stdint.h - found
+-- Looking for stdio.h
+-- Looking for stdio.h - found
+-- Looking for stdlib.h
+-- Looking for stdlib.h - found
+-- Looking for string.h
+-- Looking for string.h - found
+-- Looking for strings.h
+-- Looking for strings.h - found
+-- Looking for sys/types.h
+-- Looking for sys/types.h - found
+-- Looking for wchar.h
+-- Looking for wchar.h - found
+-- Looking for 7 include files stddef.h, ..., float.h
+-- Looking for 7 include files stddef.h, ..., float.h - found
+-- Looking for M_PI
+-- Looking for M_PI - found
+-- Performing Test HAVE_MPROTECT
+-- Performing Test HAVE_MPROTECT - Success
+-- Looking for strtod
+-- Looking for strtod - found
+-- Looking for malloc
+-- Looking for malloc - found
+-- Looking for calloc
+-- Looking for calloc - found
+-- Looking for realloc
+-- Looking for realloc - found
+-- Looking for free
+-- Looking for free - found
+-- Looking for getenv
+-- Looking for getenv - found
+-- Looking for setenv
+-- Looking for setenv - found
+-- Looking for putenv
+-- Looking for putenv - found
+-- Looking for unsetenv
+-- Looking for unsetenv - found
+-- Looking for bsearch
+-- Looking for bsearch - found
+-- Looking for qsort
+-- Looking for qsort - found
+-- Looking for abs
+-- Looking for abs - found
+-- Looking for bcopy
+-- Looking for bcopy - found
+-- Looking for memset
+-- Looking for memset - found
+-- Looking for memcpy
+-- Looking for memcpy - found
+-- Looking for memmove
+-- Looking for memmove - found
+-- Looking for memcmp
+-- Looking for memcmp - found
+-- Looking for strlen
+-- Looking for strlen - found
+-- Looking for strlcpy
+-- Looking for strlcpy - found
+-- Looking for strlcat
+-- Looking for strlcat - found
+-- Looking for _strrev
+-- Looking for _strrev - not found
+-- Looking for _strupr
+-- Looking for _strupr - not found
+-- Looking for _strlwr
+-- Looking for _strlwr - not found
+-- Looking for index
+-- Looking for index - found
+-- Looking for rindex
+-- Looking for rindex - found
+-- Looking for strchr
+-- Looking for strchr - found
+-- Looking for strrchr
+-- Looking for strrchr - found
+-- Looking for strstr
+-- Looking for strstr - found
+-- Looking for strtok_r
+-- Looking for strtok_r - found
+-- Looking for itoa
+-- Looking for itoa - not found
+-- Looking for _ltoa
+-- Looking for _ltoa - not found
+-- Looking for _uitoa
+-- Looking for _uitoa - not found
+-- Looking for _ultoa
+-- Looking for _ultoa - not found
+-- Looking for strtol
+-- Looking for strtol - found
+-- Looking for strtoul
+-- Looking for strtoul - found
+-- Looking for _i64toa
+-- Looking for _i64toa - not found
+-- Looking for _ui64toa
+-- Looking for _ui64toa - not found
+-- Looking for strtoll
+-- Looking for strtoll - found
+-- Looking for strtoull
+-- Looking for strtoull - found
+-- Looking for atoi
+-- Looking for atoi - found
+-- Looking for atof
+-- Looking for atof - found
+-- Looking for strcmp
+-- Looking for strcmp - found
+-- Looking for strncmp
+-- Looking for strncmp - found
+-- Looking for _stricmp
+-- Looking for _stricmp - not found
+-- Looking for strcasecmp
+-- Looking for strcasecmp - found
+-- Looking for _strnicmp
+-- Looking for _strnicmp - not found
+-- Looking for strncasecmp
+-- Looking for strncasecmp - found
+-- Looking for strcasestr
+-- Looking for strcasestr - found
+-- Looking for wcscmp
+-- Looking for wcscmp - found
+-- Looking for _wcsdup
+-- Looking for _wcsdup - not found
+-- Looking for wcsdup
+-- Looking for wcsdup - found
+-- Looking for wcslcat
+-- Looking for wcslcat - found
+-- Looking for wcslcpy
+-- Looking for wcslcpy - found
+-- Looking for wcslen
+-- Looking for wcslen - found
+-- Looking for wcsncmp
+-- Looking for wcsncmp - found
+-- Looking for wcsstr
+-- Looking for wcsstr - found
+-- Looking for wcscasecmp
+-- Looking for wcscasecmp - found
+-- Looking for _wcsicmp
+-- Looking for _wcsicmp - not found
+-- Looking for wcsncasecmp
+-- Looking for wcsncasecmp - found
+-- Looking for _wcsnicmp
+-- Looking for _wcsnicmp - not found
+-- Looking for sscanf
+-- Looking for sscanf - found
+-- Looking for vsscanf
+-- Looking for vsscanf - found
+-- Looking for vsnprintf
+-- Looking for vsnprintf - found
+-- Looking for fopen64
