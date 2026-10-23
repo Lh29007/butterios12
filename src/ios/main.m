@@ -8,6 +8,7 @@
 // A data.win directly in Documents is also listed.
 
 #import <UIKit/UIKit.h>
+#import "zip_import.h"
 
 // The stb implementations must be defined before including the headers.
 #define STB_IMAGE_IMPLEMENTATION
@@ -527,7 +528,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
 @end
 
-@interface BSLauncherVC : UICollectionViewController
+@interface BSLauncherVC : UICollectionViewController <UIDocumentPickerDelegate>
 @property (nonatomic, strong) NSArray<BSGame *> *games;
 @end
 
@@ -547,9 +548,12 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     self.collectionView.backgroundColor = BS_BG;
     self.collectionView.alwaysBounceVertical = YES;
     [self.collectionView registerClass:[BSGameCell class] forCellWithReuseIdentifier:@"game"];
-    self.navigationItem.rightBarButtonItem =
+    self.navigationItem.rightBarButtonItems = @[
         [[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStylePlain
-                                        target:self action:@selector(openOptions)];
+                                        target:self action:@selector(openOptions)],
+        [[UIBarButtonItem alloc] initWithTitle:@"Importer ZIP" style:UIBarButtonItemStylePlain
+                                        target:self action:@selector(importZIP)]
+    ];
     self.navigationItem.leftBarButtonItem =
         [[UIBarButtonItem alloc] initWithTitle:@"Actualiser" style:UIBarButtonItemStylePlain
                                         target:self action:@selector(reload)];
@@ -579,6 +583,65 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     BSOptionsVC *vc = [[BSOptionsVC alloc] initWithStyle:UITableViewStyleGrouped];
     [self.navigationController pushViewController:vc animated:YES];
 }
+
+#pragma mark - ZIP import (UIKit / iOS 12 compatible)
+
+- (void)importZIP {
+    UIDocumentPickerViewController *picker =
+        [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[@"public.zip-archive"]
+                                                               inMode:UIDocumentPickerModeImport];
+    picker.delegate = self;
+    picker.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:picker animated:YES completion:nil];
+}
+
+- (void)documentPicker:(UIDocumentPickerViewController *)controller
+ didPickDocumentsAtURLs:(NSArray<NSURL *> *)urls {
+    (void)controller;
+    NSURL *sourceURL = urls.firstObject;
+    if (!sourceURL) return;
+
+    BOOL didAccess = [sourceURL startAccessingSecurityScopedResource];
+    NSString *docs = documentsDirectory();
+    NSString *folderName = [[NSUUID UUID] UUIDString];
+    NSString *destination = [docs stringByAppendingPathComponent:folderName];
+    char dataWinPath[4096] = {0};
+    char errorBuffer[512] = {0};
+
+    BOOL ok = IOSZipImport_extract(sourceURL.fileSystemRepresentation,
+                                   destination.fileSystemRepresentation,
+                                   dataWinPath, sizeof(dataWinPath),
+                                   errorBuffer, sizeof(errorBuffer));
+    if (didAccess) [sourceURL stopAccessingSecurityScopedResource];
+
+    if (!ok) {
+        [[NSFileManager defaultManager] removeItemAtPath:destination error:nil];
+        NSString *message = errorBuffer[0]
+            ? [NSString stringWithUTF8String:errorBuffer]
+            : @"Impossible d'importer ce ZIP.";
+        UIAlertController *alert = [UIAlertController
+            alertControllerWithTitle:@"Import impossible" message:message
+            preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"OK"
+                                                   style:UIAlertActionStyleDefault handler:nil]];
+        [self presentViewController:alert animated:YES completion:nil];
+        return;
+    }
+
+    [self reload];
+    UIAlertController *alert = [UIAlertController
+        alertControllerWithTitle:@"Jeu importé"
+        message:@"Le ZIP complet a été extrait. Le jeu est disponible dans la bibliothèque."
+        preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"OK"
+                                               style:UIAlertActionStyleDefault handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
+    (void)controller;
+}
+
 
 #pragma mark - Data source
 
