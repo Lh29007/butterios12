@@ -89,25 +89,32 @@ static NSArray<BSGame *> *scanGames(void) {
         [games addObject:g];
     }
 
-    for (NSString *entry in [fm contentsOfDirectoryAtPath:docs error:nil]) {
-        if ([entry hasPrefix:@"."]) continue;
-        NSString *dir = [docs stringByAppendingPathComponent:entry];
+    NSDirectoryEnumerator *enumerator = [fm enumeratorAtPath:docs];
+    NSString *entry = nil;
+    while ((entry = [enumerator nextObject])) {
+        if ([entry hasPrefix:@"."] || [entry containsString:@"/."]) continue;
+        if (![entry.lastPathComponent isEqualToString:@"data.win"]) continue;
+
+        NSString *dataWin = [docs stringByAppendingPathComponent:entry];
+        if ([dataWin isEqualToString:rootDataWin]) continue;
         BOOL isDir = NO;
-        if (![fm fileExistsAtPath:dir isDirectory:&isDir] || !isDir) continue;
-        NSString *dataWin = [dir stringByAppendingPathComponent:@"data.win"];
-        if (![fm fileExistsAtPath:dataWin]) continue;
+        if (![fm fileExistsAtPath:dataWin isDirectory:&isDir] || isDir) continue;
+
+        NSString *gameDirectory = [dataWin stringByDeletingLastPathComponent];
+        NSString *relativeDirectory = [gameDirectory substringFromIndex:MIN(docs.length + 1, gameDirectory.length)];
+        if (relativeDirectory.length == 0) continue;
 
         BSGame *g = [[BSGame alloc] init];
-        g.folderName = entry;
-        NSString *title = readText([dir stringByAppendingPathComponent:@"title.txt"]);
-        g.name = title.length ? title : entry;
-        g.descriptionText = readText([dir stringByAppendingPathComponent:@"description.txt"]) ?: @"";
+        g.folderName = relativeDirectory;
+        NSString *title = readText([gameDirectory stringByAppendingPathComponent:@"title.txt"]);
+        g.name = title.length ? title : gameDirectory.lastPathComponent;
+        g.descriptionText = readText([gameDirectory stringByAppendingPathComponent:@"description.txt"]) ?: @"";
         for (NSString *cover in @[@"cover.png", @"cover.jpg", @"cover.jpeg"]) {
-            NSString *p = [dir stringByAppendingPathComponent:cover];
+            NSString *p = [gameDirectory stringByAppendingPathComponent:cover];
             if ([fm fileExistsAtPath:p]) { g.coverPath = p; break; }
         }
         g.dataWinPath = dataWin;
-        g.savesPath = [dir stringByAppendingPathComponent:@"saves"];
+        g.savesPath = [gameDirectory stringByAppendingPathComponent:@"saves"];
         [games addObject:g];
     }
 
