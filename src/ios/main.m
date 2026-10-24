@@ -28,9 +28,6 @@
 #define BS_CARD [UIColor colorWithRed:0.14 green:0.17 blue:0.23 alpha:1.0]
 #define BS_ACCENT [UIColor colorWithRed:0.12 green:0.55 blue:0.85 alpha:1.0]
 
-// ---------------------------------------------------------------------------
-// Logging (required by the runner)
-// ---------------------------------------------------------------------------
 
 void platformLog(const logType type, const char *format, va_list va) {
     FILE *out = stderr;
@@ -47,9 +44,6 @@ void platformLog(const logType type, const char *format, va_list va) {
     vfprintf(out, format, va);
 }
 
-// ---------------------------------------------------------------------------
-// Games
-// ---------------------------------------------------------------------------
 
 @interface BSGame : NSObject
 @property (nonatomic, copy) NSString *name;
@@ -168,9 +162,6 @@ static void launchGame(BSGame *g, UIWindow *window) {
     });
 }
 
-// ---------------------------------------------------------------------------
-// Options: key mapping, touch controls, layout
-// ---------------------------------------------------------------------------
 
 static NSArray<NSString *> *positionKeys(void) {
     return @[@"stick", @"z", @"x", @"c", @"enter", @"shift", @"esc"];
@@ -331,9 +322,6 @@ static void styleCell(UITableViewCell *c) {
 
 @end
 
-// ---------------------------------------------------------------------------
-// Game cards and grid
-// ---------------------------------------------------------------------------
 
 @interface BSGameCell : UICollectionViewCell
 @property (nonatomic, strong) UIImageView *cover;
@@ -690,9 +678,6 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
 @end
 
-// ---------------------------------------------------------------------------
-// App lifecycle
-// ---------------------------------------------------------------------------
 
 @interface BSAppDelegate : UIResponder <UIApplicationDelegate>
 @property (nonatomic, strong) UIWindow *window;

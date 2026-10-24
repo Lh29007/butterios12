@@ -51,9 +51,6 @@ static CGPoint savedFraction(NSString *posKey, CGPoint defFraction) {
 
 static void setEditMode(BOOL on);
 
-// ---------------------------------------------------------------------------
-// Control view: a joystick (stick) or a single key button.
-// ---------------------------------------------------------------------------
 
 @interface BSControlView : UIView {
     BOOL _dirs[4];
@@ -174,9 +171,6 @@ static void setEditMode(BOOL on);
 
 @end
 
-// ---------------------------------------------------------------------------
-// Overlay: hit-tests only the controls, so everything else reaches SDL.
-// ---------------------------------------------------------------------------
 
 @interface BSOverlayView : UIView
 @end
@@ -268,9 +262,6 @@ static BSControlView *makeStick(void) {
     return c;
 }
 
-// ---------------------------------------------------------------------------
-// Public API (touch_controls.h)
-// ---------------------------------------------------------------------------
 
 bool IOSLauncher_touchControlsEnabled(void) {
     NSNumber *v = [[NSUserDefaults standardUserDefaults] objectForKey:@"bs.touch.enabled"];
@@ -311,7 +302,6 @@ void IOSTouchControls_install(void *sdlWindow, IOSTouchControlsKeyCallback callb
         [overlay addSubview:makeButton(A_SHIFT, kPosShift)];
         [overlay addSubview:makeButton(A_ESC, kPosEsc)];
 
-        // "OK" button, only visible while moving buttons.
         UIButton *done = [UIButton buttonWithType:UIButtonTypeCustom];
         done.tag = kDoneTag;
         done.bounds = CGRectMake(0, 0, 90, 40);
@@ -324,7 +314,6 @@ void IOSTouchControls_install(void *sdlWindow, IOSTouchControlsKeyCallback callb
         [overlay addSubview:done];
     }
 
-    // FPS counter, top left.
     gFpsLabel = nil;
     if (showFPS) {
         UILabel *fps = [[UILabel alloc] initWithFrame:CGRectMake(12, 8, 120, 24)];
