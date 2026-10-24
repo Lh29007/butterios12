@@ -268,7 +268,6 @@ flags |= SDL_WINDOW_ALLOW_HIGHDPI;
 #endif
 
 #ifdef BUTTERSCOTCH_PLATFORM_IOS
-    // Always fill the iPad screen.
     flags |= SDL_WINDOW_FULLSCREEN;
 #endif
 

@@ -59,7 +59,6 @@ jobs:
         run: |
           APP=$(find build-ios12 -name "*.app" -path "*Release-iphoneos*" -maxdepth 6 | head -1)
           echo "App: $APP"
-          # Pseudo-sign the binary so Filza/jailbreak installs accept it.
           ldid -S "$APP/$(basename "$APP" .app)"
           mkdir -p Payload && cp -R "$APP" Payload/
           zip -qr Btios21.ipa Payload

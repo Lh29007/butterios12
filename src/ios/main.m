@@ -1,16 +1,7 @@
-// iOS 12 entry point for Butterscotch: a Steam-style UIKit launcher.
-//
-// Each game is a folder in <Documents>/ containing data.win. Optional files in
-// that folder customize the entry:
-//   cover.png | cover.jpg   cover art (2:3 works best)
-//   title.txt               display name (otherwise the folder name)
-//   description.txt         description shown on the game page
-// A data.win directly in Documents is also listed.
 
 #import <UIKit/UIKit.h>
 #import "zip_import.h"
 
-// The stb implementations must be defined before including the headers.
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb_image.h>
@@ -28,7 +19,6 @@
 #define BS_CARD [UIColor colorWithRed:0.14 green:0.17 blue:0.23 alpha:1.0]
 #define BS_ACCENT [UIColor colorWithRed:0.12 green:0.55 blue:0.85 alpha:1.0]
 
-
 void platformLog(const logType type, const char *format, va_list va) {
     FILE *out = stderr;
     const char *textPrefix = "";
@@ -44,13 +34,12 @@ void platformLog(const logType type, const char *format, va_list va) {
     vfprintf(out, format, va);
 }
 
-
 @interface BSGame : NSObject
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *folderName;
 @property (nonatomic, copy) NSString *dataWinPath;
 @property (nonatomic, copy) NSString *savesPath;
-@property (nonatomic, copy) NSString *coverPath;   // may be nil
+@property (nonatomic, copy) NSString *coverPath;
 @property (nonatomic, copy) NSString *descriptionText;
 @end
 
@@ -118,7 +107,6 @@ static NSArray<BSGame *> *scanGames(void) {
     return games;
 }
 
-// Runs the runner on the main thread. Returns when the game exits.
 static int runGame(BSGame *g) {
     setbuf(stdout, NULL);
     setbuf(stderr, NULL);
@@ -142,7 +130,6 @@ static int runGame(BSGame *g) {
 #else
     args.renderer = SOFTWARE;
 #endif
-    // Fill the screen in landscape: use the screen size as the window size.
     CGRect screen = [UIScreen mainScreen].bounds;
     args.windowWidth = (int32_t)MAX(screen.size.width, screen.size.height);
     args.windowHeight = (int32_t)MIN(screen.size.width, screen.size.height);
@@ -152,7 +139,6 @@ static int runGame(BSGame *g) {
     return loop(args, "");
 }
 
-// Hides the launcher, starts the game, and closes the app when it exits.
 static void launchGame(BSGame *g, UIWindow *window) {
     window.hidden = YES;
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -161,7 +147,6 @@ static void launchGame(BSGame *g, UIWindow *window) {
         exit(ret);
     });
 }
-
 
 static NSArray<NSString *> *positionKeys(void) {
     return @[@"stick", @"z", @"x", @"c", @"enter", @"shift", @"esc"];
@@ -228,7 +213,6 @@ static void styleCell(UITableViewCell *c) {
 @interface BSOptionsVC : UITableViewController
 @end
 
-// Sections: 0 = key mapping, 1 = touch controls, 2 = reset.
 @implementation BSOptionsVC
 
 - (void)viewDidLoad {
@@ -321,7 +305,6 @@ static void styleCell(UITableViewCell *c) {
 }
 
 @end
-
 
 @interface BSGameCell : UICollectionViewCell
 @property (nonatomic, strong) UIImageView *cover;
@@ -429,7 +412,6 @@ static void styleCell(UITableViewCell *c) {
 
     self.coverButton = [self secondaryButton:@"Changer la jaquette" action:@selector(changeCover)];
     self.descButton = [self secondaryButton:@"Modifier la description" action:@selector(editDescription)];
-    // The root data.win entry lives directly in Documents: no per-game files there.
     BOOL isRoot = [self.game.folderName isEqualToString:@"Documents"];
     self.coverButton.hidden = isRoot;
     self.descButton.hidden = isRoot;
@@ -637,7 +619,6 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     (void)controller;
 }
 
-
 #pragma mark - Data source
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView { return 1; }
@@ -677,7 +658,6 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 }
 
 @end
-
 
 @interface BSAppDelegate : UIResponder <UIApplicationDelegate>
 @property (nonatomic, strong) UIWindow *window;

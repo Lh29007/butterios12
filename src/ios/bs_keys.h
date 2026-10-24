@@ -1,6 +1,4 @@
 #pragma once
-// Shared key tables for the iOS touch overlay and launcher.
-// VK codes are Windows virtual-key codes (the runner's keyboard layer uses them).
 
 #include <stddef.h>
 
@@ -26,7 +24,6 @@ static const BSKeyChoice kKeyChoices[] = {
 };
 #define N_KEY_CHOICES (sizeof(kKeyChoices) / sizeof(kKeyChoices[0]))
 
-// Implemented in touch_overlay.m: the VK currently mapped to an action (user override or default).
 int BSMappedVK(int action);
 
 static inline const char *BSKeyName(int vk) {

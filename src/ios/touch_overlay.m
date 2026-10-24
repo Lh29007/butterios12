@@ -1,6 +1,3 @@
-// On-screen touch controls for the iOS 12 build (UIKit, no Swift).
-// Joystick (left) -> arrow keys. Buttons (right) -> Z, X, C, Enter, Shift, Esc.
-// Options (remapping, layout, on/off) live in the launcher, not in the game.
 
 #import <UIKit/UIKit.h>
 #import <SDL2/SDL.h>
@@ -50,7 +47,6 @@ static CGPoint savedFraction(NSString *posKey, CGPoint defFraction) {
 }
 
 static void setEditMode(BOOL on);
-
 
 @interface BSControlView : UIView {
     BOOL _dirs[4];
@@ -109,7 +105,7 @@ static void setEditMode(BOOL on);
 - (void)setDirection:(int)i down:(BOOL)down {
     if (_dirs[i] == down) return;
     _dirs[i] = down;
-    sendKey(BSMappedVK(i), down);  // i matches A_UP, A_DOWN, A_LEFT, A_RIGHT
+    sendKey(BSMappedVK(i), down);
 }
 
 - (void)updateStickWithTouch:(UITouch *)t {
@@ -170,7 +166,6 @@ static void setEditMode(BOOL on);
 }
 
 @end
-
 
 @interface BSOverlayView : UIView
 @end
@@ -262,7 +257,6 @@ static BSControlView *makeStick(void) {
     return c;
 }
 
-
 bool IOSLauncher_touchControlsEnabled(void) {
     NSNumber *v = [[NSUserDefaults standardUserDefaults] objectForKey:@"bs.touch.enabled"];
     return v ? [v boolValue] : YES;
@@ -328,7 +322,6 @@ void IOSTouchControls_install(void *sdlWindow, IOSTouchControlsKeyCallback callb
     [gWindow addSubview:overlay];
     [overlay setNeedsLayout];
 
-    // "Move buttons at next launch" is a one-shot flag: consume it here.
     NSUserDefaults *d = [NSUserDefaults standardUserDefaults];
     if (showControls && [d boolForKey:@"bs.edit.onstart"]) {
         [d setBool:NO forKey:@"bs.edit.onstart"];

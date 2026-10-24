@@ -166,7 +166,6 @@ file(GLOB SOURCES
     src/backends/sdl2.c
 )
 
-# Minimal iOS 12 build: only the UIKit entry point (no Swift/SwiftUI launcher).
 set(IOS_SOURCES src/ios/main.m src/ios/touch_overlay.m src/ios/zip_import.c)
 
 file(GLOB ANDROID_SOURCES
