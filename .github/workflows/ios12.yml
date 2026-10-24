@@ -2,7 +2,7 @@ name: iOS 12 build
 
 on:
   push:
-    branches: [ios12-port]
+    branches: [ios12-port, feature/ios12-zip-import-files]
     paths-ignore:
       - 'logs/**'
   workflow_dispatch:
@@ -70,7 +70,11 @@ jobs:
         run: |
           RUN="${{ github.run_number }}"
           mkdir -p logs
-          cp build.log "logs/build-${RUN}.log" 2>/dev/null || echo "no log" > "logs/build-${RUN}.log"
+          if [ -f build.log ]; then
+            cp build.log "logs/build-${RUN}.log"
+          else
+            printf '%s\n' "Build log was not created." > "logs/build-${RUN}.log"
+          fi
           cp "logs/build-${RUN}.log" logs/latest.log
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
